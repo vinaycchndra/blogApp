@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>About...</h1>
+<br>
+<div class="card mb-3" >
+  <div class="row no-gutters">
+    <div class="col-md-2">
+      {% if profile_obj.profile_pic %}
+        <img src="{{profile_obj.profile_pic.url}}" class="card-img">
+      {% else %}
+        <img src="{% static 'theBlog/Images/default_profile_pic.PNG' %}" class="card-img">
+      {% endif %}
+    </div>
+    <div class="col-md-10">
+      <div class="card-body">
+        <h5 class="card-title">
+            {{ profile_obj.user.first_name }}
+            {{ profile_obj.user.last_name }}
+        </h5>
+        <p class="small text-muted">
+            {% if profile_obj.portfolio_url %}
+            <a href="{{profile_obj.portfolio_url}}">Website |</a>
+            {% endif %}
+            {% if profile_obj.linkedin_url %}
+            <a href="{{profile_obj.linkedin_url}}">Linkedin </a>
+            {% endif %}
+        </p>
+        <p class="card-text text-muted">{{profile_obj.bio}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

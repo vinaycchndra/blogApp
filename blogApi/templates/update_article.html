@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<title>{% block title %} Add Blog {% endblock %}</title>
+{% if user.id == userId  and user.is_authenticated %}
+    <h1>Update Blog</h1>
+        <p class="form-group">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Post</button>
+                </form>
+        </p>
+{% else %}
+    <h4>You cannot edit this Post</h4>
+{% endif %}
+{% endblock %}

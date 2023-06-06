@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<title>{% block title %} {{post.title_tag}} {% endblock %}</title>
+<h1>{{ post.title }}</h1>
+<small>By: {{post.auther.first_name}}
+           {{post.auther.last_name}} |
+           {{post.date_publication}}
+           {% if  user.is_authenticated %}
+               {% if user.id == post.auther.id %}
+                    | <a href="{% url 'update-post' post.id%}">(Update Article)</a> |
+                    <a href="{% url 'delete-post' post.id%}">(Delete Article)</a>
+               {% endif %}
+           {% endif %}
+</small>
+<br>
+<hr>
+</br>
+{% if post.header_image %}
+<img src={{post.header_image.url}}></img>
+{% endif %}
+<text>{{post.body | safe}}</text>
+
+<hr></hr>
+
+
+    <h5>Likes:  {{ likeCount }}</h5>
+
+        {% if  user.is_authenticated %}
+                {% if Liked %}
+                    <br>
+                    <a href="{% url 'hit-the-like-dislike' post.id %}" class="btn btn-danger">Unlike</a>
+                {% else %}
+                    <br>
+                    <a href="{% url 'hit-the-like-dislike' post.id %}" class="btn btn-primary">Like</a>
+                {% endif %}
+        {% else %}
+        <a href="{% url 'login' %}" >Sign-In </a>To Like
+        {% endif %}
+      <br></br>
+      <h4>Comments....</h4>
+        <hr></hr>
+      {% if post.comments.all %}
+        {% for comment in post.comments.all %}
+            <strong>{{comment.commentator.first_name}} {{comment.commentator.last_name}}- {{ comment.date_added }}
+                {% if  user.is_authenticated and request.user.id == comment.commentator.id %}
+                - <a href="{% url 'delete-comment' comment.id %}">Delete</a>
+                {% endif %}
+            </strong>
+            <br>
+            {{comment.comment}}
+            <br></br>
+        {% endfor %}
+      {% else %}
+        <br>
+        <h5>Be First One to Comment</h5>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+        Add Comments
+        <a href="{% url 'add-comment' post.id %}"> Here</a>
+      {% else %}
+        <a href="{% url 'login' %}" >Sign-In </a>To Add Comment
+      {% endif %}
+      <br>
+      <hr></hr>
+            {% if post.auther.profile %}
+
+            <h5>Visit Author's <a href="{% url 'author_profile' post.auther.profile.id %}">Profile</a></h5>
+            {% endif %}
+
+
+      <br></br>
+{% endblock %}
+
+

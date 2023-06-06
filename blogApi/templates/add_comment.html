@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<title>{% block title %} Add Comment {% endblock %}</title>
+{% if user.is_authenticated %}
+    <h1>Add Comment....</h1>
+        <p class="form-group">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-secondary">Post</button>
+                </form>
+        </p>
+{% else %}
+    <h4>You cannot Add Comment</h4>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Get all your favourite blogs</h1>
+<ul>
+{% for post in post_object %}
+    <li> <a href={% url "article-detail" post.pk %}>{{post.title}}</a> - <a href={% url "get-category" post.category|slugify %}> {{post.category}}</a> - {{post.auther.first_name }} {{ post.auther.last_name }}- {{post.auther.email}}
+        {% if user.is_authenticated and post.auther.id == user.id %}
+            -
+            <small><a href={% url "update-post" post.pk %}>(Edit)</a></small>
+            <small><a href={% url "delete-post" post.pk %}>(Delete)</a></small>
+        {% endif %}
+        </br>{{post.snippet}}</li>
+{% endfor %}
+</ul>
+{% endblock %}

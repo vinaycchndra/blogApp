@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<title>{% block title %} Update Profile {% endblock %}</title>
+{% if user.id == userId%}
+    <h1>Update Profile...</h1>
+        <p class="form-group">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form_obj.media }}
+                {{ form_obj.as_p }}
+                <button type="submit" class="btn btn-secondary">Update</button>
+                </form>
+        </p>
+{% else %}
+    <h4>You cannot edit this Post</h4>
+{% endif %}
+{% endblock %}
