@@ -55,6 +55,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'BLOG_API.urls'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-dcf91.up.railway.app'
+]
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
