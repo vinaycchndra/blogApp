@@ -28,7 +28,7 @@ def addChildComment(request, pk):
         context['form'] = formObj
         return render(request, 'add_comment.html', context)
 
-def deleteParentCommentView(request, pk):
+def deleteCommentView(request, pk):
     try:
         commentObj = Comments.objects.get(id=pk)
     except Comments.DoesNotExist:
