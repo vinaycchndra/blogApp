@@ -8,17 +8,39 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 
-def deleteCommentView(request, pk):
-    commentObj = get_object_or_404(Comments,id=pk)
-    pg_id = commentObj.article.id
+def addChildComment(request, pk):
+    parentComment = get_object_or_404(Comments, id=pk)
+    postObj = parentComment.article
+    if request.method == 'POST':
+        formObj = AddCommentForm(request.POST)
+        if formObj.is_valid():
+            newInstance = Comments.objects.create(commentator=request.user, article=postObj,
+                                                  comment=formObj.cleaned_data["comment"], parent=parentComment)
+            newInstance.save()
+            return redirect('/home/{}'.format(postObj.id))
+        else:
+            context = {}
+            context['form'] = formObj
+            return render(request, 'add_comment.html', context)
+    else:
+        formObj = AddCommentForm()
+        context = {}
+        context['form'] = formObj
+        return render(request, 'add_comment.html', context)
+
+def deleteParentCommentView(request, pk):
+    try:
+        commentObj = Comments.objects.get(id=pk)
+    except Comments.DoesNotExist:
+        raise Http404("This profile does not exist")
+    post_id = commentObj.article.id
     if request.user.is_authenticated and request.user.id==commentObj.commentator.id:
         commentObj.delete()
-        return redirect('/home/{}'.format(pg_id))
+        return redirect('/home/{}'.format(post_id))
     else:
         return HttpResponse(request, "You can not Delete this post !!!!!!!!!!")
 
-def addCommentView(request, pk):
-    userObj = request.user
+def addParentCommentView(request, pk):
     postObj = get_object_or_404(Post,id=pk)
     if request.method == 'POST':
         formObj = AddCommentForm(request.POST)
@@ -166,6 +188,7 @@ def updatePostView(request, pk):
     context = {'form': form, 'userId': userId }
     return render(request, 'update_article.html', context)
 
+
 def delPostView(request, pk):
     instance = Post.objects.get(pk=pk)
     if request.method=='POST':
@@ -183,12 +206,13 @@ class PostView(View):
 
 class DetailArticleView(View):
     def get(self, request, pk):
-        postObject = Post.objects.get(pk=pk)
+        postObject = Post.objects.get(id=pk)
         if request.user.is_authenticated:
             context = self.getContext(request.user, postObject)
         else:
             context = {}
         context['post'] = postObject
+        context['all_parent_comments'] = Comments.nonParent.all()
         context['likeCount'] = self.getLikeCount(postObject)
         return render(request, 'article_detail.html', context)
 

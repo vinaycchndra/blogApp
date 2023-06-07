@@ -40,8 +40,8 @@
       <br></br>
       <h4>Comments....</h4>
         <hr></hr>
-      {% if post.comments.all %}
-        {% for comment in post.comments.all %}
+      {% if all_parent_comments %}
+        {% for comment in all_parent_comments %}
             <strong>{{comment.commentator.first_name}} {{comment.commentator.last_name}}- {{ comment.date_added }}
                 {% if  user.is_authenticated and request.user.id == comment.commentator.id %}
                 - <a href="{% url 'delete-comment' comment.id %}">Delete</a>
@@ -49,8 +49,29 @@
             </strong>
             <br>
             {{comment.comment}}
+
+            {% if user.is_authenticated %}
+                <br>
+                <a href="{% url 'add-child-comment' comment.id %}">Reply</a>
+            {% endif %}
+                {% for child_comment in comment.all_children %}
+                <div class="col-md-10 offset-md-1">
+                <br></br>
+                <strong>{{child_comment.commentator.first_name}} {{child_comment.commentator.last_name}}- {{ child_comment.date_added }}
+                {% if  user.is_authenticated and request.user.id == child_comment.commentator.id %}
+                - <a href="{% url 'delete-comment' child_comment.id %}">Delete</a>
+                {% endif %}
+                </strong>
+                </br>
+                {{child_comment.comment}}
+                </div>
+                {% endfor %}
+
+
             <br></br>
-        {% endfor %}
+            {% endfor %}
+
+
       {% else %}
         <br>
         <h5>Be First One to Comment</h5>
@@ -58,7 +79,7 @@
 
       {% if user.is_authenticated %}
         Add Comments
-        <a href="{% url 'add-comment' post.id %}"> Here</a>
+        <a href="{% url 'add-parent-comment' post.id %}"> Here</a>
       {% else %}
         <a href="{% url 'login' %}" >Sign-In </a>To Add Comment
       {% endif %}

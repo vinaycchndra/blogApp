@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import PostView, DetailArticleView, createPostView, updatePostView, delPostView, CategoryView, likeDislikeView, authorProfileView, editAuthorProfileView, createAuthorProfileView, addCommentView, deleteCommentView
+from .views import PostView, DetailArticleView, createPostView, updatePostView, delPostView, CategoryView, likeDislikeView, authorProfileView, editAuthorProfileView, createAuthorProfileView, addParentCommentView, addChildComment, deleteParentCommentView
 urlpatterns = [
     path('<int:pk>/', DetailArticleView.as_view(), name='article-detail'),
     path('', PostView.as_view(), name='myview'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile/<int:pk>', authorProfileView, name='author_profile'),
     path('edit-profile/<int:pk>', editAuthorProfileView, name='edit_author_profile'),
     path('create_profile/', createAuthorProfileView, name='create_author_profile'),
-    path('article/<int:pk>/add_comment', addCommentView, name='add-comment'),
-    path('delete-comment/<int:pk>', deleteCommentView, name='delete-comment'),
+    path('article/<int:pk>/add_parent_comment', addParentCommentView, name='add-parent-comment'),
+    path('delete-comment/<int:pk>', deleteParentCommentView, name='delete-comment'),
+    path('article/<int:pk>/add_child_comment', addChildComment, name='add-child-comment'),
     ]
