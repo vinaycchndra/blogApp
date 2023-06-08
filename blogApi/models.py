@@ -27,7 +27,7 @@ class Post(models.Model):
     body = RichTextField(blank=True, null = True)
     date_publication = models.DateTimeField(auto_now_add=True)
     category = models.CharField(max_length=255, default='coding')
-    snippet = models.CharField(max_length=255)
+    snippet = models.CharField(max_length=1000)
     def __str__(self):
         return self.title+' | '+str(self.auther)
 

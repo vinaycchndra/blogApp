@@ -212,7 +212,7 @@ class DetailArticleView(View):
         else:
             context = {}
         context['post'] = postObject
-        context['all_parent_comments'] = Comments.nonParent.all()
+        context['all_parent_comments'] = Comments.nonParent.filter(article=postObject)
         context['likeCount'] = self.getLikeCount(postObject)
         return render(request, 'article_detail.html', context)
 
