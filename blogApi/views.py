@@ -149,7 +149,7 @@ def createPostView(request):
         if new_form.is_valid():
             #print(new_form.cleaned_data)
             newInstance = Post.objects.create(auther = request.user, title = new_form.cleaned_data["title"],
-                        title_tag = new_form.cleaned_data["title_tag"], body = new_form.cleaned_data["body"], header_image=new_form.cleaned_data["header_image"])
+                        title_tag = new_form.cleaned_data["title_tag"], body = new_form.cleaned_data["body"], header_image=new_form.cleaned_data["header_image"], category=new_form.cleaned_data["category"], snippet=new_form.cleaned_data["snippet"])
             #instance = new_form.save()
             newInstance.save()
             return redirect('/home/'+str(newInstance.id))
