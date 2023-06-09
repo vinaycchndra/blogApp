@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Get all your favourite blogs</h1>
 
+
+<h1>All your favourite blogs</h1>
+<ul>
 {% for post in post_object %}
     </br>
     <div class="alert alert-success col-md-2- col-md-offset-4" role="alert">
@@ -14,8 +16,6 @@
         </div>
 
 {% endfor %}
-
-
-
-
+</ul>
 {% endblock %}
+
