@@ -55,9 +55,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'BLOG_API.urls'
 
-#CSRF_TRUSTED_ORIGINS = [
-#    'https://blogapp-production-7091.up.railway.app'
-#]
+CSRF_TRUSTED_ORIGINS = [
+    'https://blogapp-production-7091.up.railway.app'
+]
 
 
 TEMPLATES = [
